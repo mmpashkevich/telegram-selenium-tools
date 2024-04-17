@@ -24,12 +24,16 @@ services:
       - api:app
       - --host
       - selenium-api
+    volumes:
+      - .cache:/app/src/selenium_service/.cache
   selenium-worker:
     networks:
       - net
     build:
       context: .
     working_dir: /app/src/selenium_service
+    volumes:
+      - .cache:/app/src/selenium_service/.cache
     entrypoint:
       - python3
       - selenium_service.py

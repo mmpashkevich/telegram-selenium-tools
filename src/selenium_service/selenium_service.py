@@ -30,13 +30,8 @@ class SeleniumService:
             image: SeleniumApiForecaImage = self.cache_manager.get_foreca_image()
             if image:
                 return image
-            else:
-                return self._save_foreca_image_to_cache()
         except ValidationError as err:
             print(err.json())
-        except Exception as e:
-            print(e)
-            return self._save_foreca_image_to_cache()
 
     def _save_foreca_image_to_cache(self) -> SeleniumApiForecaImage:
         print('Saving Foreca image to cache')
@@ -48,8 +43,6 @@ class SeleniumService:
                     image_base64=image_base64
                 )
                 self.cache_manager.save_foreca_image(image)
-
-                print('saved Foreca image to cache', image.name)
                 return image
         except ValidationError as err:
             print(err.json())
@@ -61,7 +54,7 @@ class SeleniumService:
         while True:
             print('loop')
             self._save_foreca_image_to_cache()
-            await asyncio.sleep(10)
+            await asyncio.sleep(1)
 
 
 if __name__ == "__main__":

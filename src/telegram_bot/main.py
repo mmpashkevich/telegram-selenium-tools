@@ -46,7 +46,7 @@ async def echo_handler(message: Message) -> None:
     try:
         foreca_image: SeleniumApiForecaImage = telegram_service.get_foreca_image()
         if foreca_image is None:
-            await message.answer("get weather picture error")
+            await message.answer("Error get weather picture. Try through few minutes.")
             return
 
         photo_bytes: bytes = base64.b64decode(foreca_image.image_base64)

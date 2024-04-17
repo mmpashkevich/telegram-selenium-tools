@@ -15,11 +15,13 @@ async def get_image() -> SeleniumApiImageResponse | SeleniumApiErrorResponse:
         data: SeleniumApiForecaImage = service.get_foreca_image()
 
         if data and data.image_base64:
-            return SeleniumApiImageResponse(image=data)
+            return SeleniumApiImageResponse(image=data.model_dump())
 
         return SeleniumApiErrorResponse(success=False, error_message="No image")
     
     except ValidationError as err:
         print(err.json())
         return SeleniumApiErrorResponse(success=False, error_message="No image")
+    except Exception as err:
+        print(err.with_traceback())
 
