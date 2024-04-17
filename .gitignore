@@ -1,0 +1,12 @@
+/src/selenium_service/.cache/
+*_not_realized_*
+.env
+.venv
+.redis
+*_copy
+.idea
+.mypy_cache
+__pycache__
+.pytest_cache
+tests/.cache
+

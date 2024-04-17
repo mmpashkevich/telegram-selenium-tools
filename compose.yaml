@@ -1,0 +1,47 @@
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Docker compose reference guide at
+# https://docs.docker.com/go/compose-spec-reference/
+
+# Here the instructions define your application as a service called "server".
+# This service is built from the Dockerfile in the current directory.
+# You can add other services your application may depend on here, such as a
+# database or a cache. For examples, see the Awesome Compose repository:
+# https://github.com/docker/awesome-compose
+networks:
+  net:
+
+services:
+  selenium-api:
+    networks:
+      - net
+    build:
+      context: .
+    working_dir: /app/src/selenium_service
+    entrypoint:
+      - python3
+      - -m
+      - uvicorn
+      - api:app
+      - --host
+      - selenium-api
+  selenium-worker:
+    networks:
+      - net
+    build:
+      context: .
+    working_dir: /app/src/selenium_service
+    entrypoint:
+      - python3
+      - selenium_service.py
+  telegram-bot:
+    networks:
+      - net
+    build:
+      context: .
+    working_dir: /app/src
+    env_file:
+      - .env
+    entrypoint:
+      - python3
+      - telegram_bot/main.py
+
