@@ -1,10 +1,9 @@
-from seleniumwire import webdriver
-import time
-from fake_useragent import UserAgent
-from PIL import Image
-from io import BytesIO
-import os
 import base64
+from io import BytesIO
+
+from PIL import Image
+from fake_useragent import UserAgent
+from seleniumwire import webdriver
 
 
 class SeleniumForecaManager:
@@ -45,9 +44,7 @@ class SeleniumForecaManager:
             print('crop')
             new_img = img.crop((265, 500, 980, 1140,))
 
-            screenshot_path = os.getcwd() + '/page.png'
             print('save to bytes')
-
             img_byte_arr = BytesIO()
             new_img.save(img_byte_arr, format='PNG')
             img_byte_arr: bytes = base64.b64encode(img_byte_arr.getvalue())

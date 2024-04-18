@@ -1,10 +1,9 @@
 import pytest
-from pydantic_core._pydantic_core import ValidationError
 
 from src.selenium_service.cache_manager import SeleniumCacheManager
-from src.selenium_service.selenium_service import SeleniumService
 from src.selenium_service.foreca import SeleniumForecaManager
-from src.selenium_service.models import SeleniumApiForecaImage, SeleniumApiResponse
+from src.selenium_service.models import SeleniumApiForecaImage
+from src.selenium_service.selenium_service import SeleniumService
 
 
 class MockSeleniumCacheManager(SeleniumCacheManager):
@@ -14,7 +13,7 @@ class MockSeleniumCacheManager(SeleniumCacheManager):
                 image_base64=b'any mock bytes'
             )
 
-    def save_foreca_image(self, data: SeleniumApiForecaImage):
+    def save_foreca_image(self, image_object: SeleniumApiForecaImage):
         pass
 
 
