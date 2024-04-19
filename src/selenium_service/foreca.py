@@ -1,10 +1,12 @@
 import base64
+import logging
 from io import BytesIO
 
 from PIL import Image
 from fake_useragent import UserAgent
 from seleniumwire import webdriver
 
+logging.getLogger('seleniumwire.handler').setLevel(logging.WARNING)
 
 class SeleniumForecaManager:
     def __init__(self):
@@ -25,33 +27,35 @@ class SeleniumForecaManager:
         useragent = UserAgent()
 
         self.options.add_argument(f"user-agent={useragent.random}")
+        self.driver = None
 
     def get_image(self) -> bytes:
         try:
-            driver = webdriver.Chrome(options=self.options)
+            logging.info('Start getting image')
+            self.driver = webdriver.Chrome(options=self.options)
 
             url = "https://www.foreca.ru/Russia/Rostov-na-Donu"
-            print('get url: ', url)
-            driver.get(url)
-            print('resize window')
-            driver.set_window_size(1024, 1200)
-            print('screenshot')
-            screenshot = BytesIO(driver.get_screenshot_as_png())
+            logging.debug('get url: ', url)
+            self.driver.get(url)
+            logging.debug('resize window')
+            self.driver.set_window_size(1024, 1200)
+            logging.debug('screenshot')
+            screenshot = BytesIO(self.driver.get_screenshot_as_png())
 
-            print('preparing screenshot from page')
+            logging.debug('preparing screenshot from page')
 
             img = Image.open(screenshot, mode='r')
-            print('crop')
+            logging.debug('crop')
             new_img = img.crop((265, 500, 980, 1140,))
 
-            print('save to bytes')
+            logging.debug('save to bytes')
             img_byte_arr = BytesIO()
             new_img.save(img_byte_arr, format='PNG')
             img_byte_arr: bytes = base64.b64encode(img_byte_arr.getvalue())
 
             return img_byte_arr
         except Exception as ex:
-            print(ex)
+            logging.error(ex, exc_info=True)
         finally:
-            driver.close()
-            driver.quit()
+            self.driver.close()
+            self.driver.quit()

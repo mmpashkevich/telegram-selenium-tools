@@ -44,7 +44,7 @@ services:
       context: .
     working_dir: /app/src
     env_file:
-      - .env
+      - config/.env
     entrypoint:
       - python3
       - telegram_bot/main.py

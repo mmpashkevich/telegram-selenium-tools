@@ -1,8 +1,11 @@
+import logging
+import os
+
+import requests
 from pydantic import ValidationError
 from requests import Response
+
 from src.selenium_service.models import SeleniumApiForecaImage, SeleniumApiImageResponse
-import requests
-import os
 
 
 class TelegramService:
@@ -17,6 +20,4 @@ class TelegramService:
                 image_response: SeleniumApiImageResponse = SeleniumApiImageResponse(**data)
                 return image_response.image
         except ValidationError as err:
-            print(err.json())
-
-
+            logging.error(err.json())

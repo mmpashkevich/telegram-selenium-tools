@@ -1,6 +1,6 @@
 /src/selenium_service/.cache/
 *_not_realized_*
-.env
+config/.env
 .venv
 .redis
 *_copy

@@ -1,9 +1,10 @@
-from fastapi import FastAPI
+import logging
 
-from selenium_service import SeleniumService
+from fastapi import FastAPI
 from pydantic import ValidationError
+
 from models import SeleniumApiImageResponse, SeleniumApiForecaImage, SeleniumApiErrorResponse
-import sys
+from selenium_service import SeleniumService
 
 app = FastAPI()
 service = SeleniumService()
@@ -20,8 +21,7 @@ async def get_image() -> SeleniumApiImageResponse | SeleniumApiErrorResponse:
         return SeleniumApiErrorResponse(success=False, error_message="No image")
     
     except ValidationError as err:
-        print(err.json())
+        logging.error(err.json())
         return SeleniumApiErrorResponse(success=False, error_message="No image")
     except Exception as err:
-        print(err.with_traceback())
-
+        logging.error(err, exc_info=True)

@@ -35,9 +35,10 @@ docker-compose build
 
 Rename file .env.example to .env and add value of TELEGRAM_TOKEN. 
 
-Example with popular "nano" text editor.
+Example with popular "nano" text editor from project directory.
 
 ```sh
+cd config
 mv .env.example .env
 nano .env
 ```

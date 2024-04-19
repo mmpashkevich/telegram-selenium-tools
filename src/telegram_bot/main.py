@@ -1,19 +1,16 @@
-
 import asyncio
 import base64
 import logging
 import os
-import sys
 
 from aiogram import Bot, Dispatcher, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aiogram.types import Message, BufferedInputFile
+
 from src.selenium_service.models import SeleniumApiForecaImage
 from src.telegram_bot.telegram_service import TelegramService
-
-# TODO: make logging according to best practices
 
 # Bot token can be obtained via https://t.me/BotFather
 TOKEN = os.getenv("TELEGRAM_TOKEN")
@@ -21,6 +18,7 @@ TOKEN = os.getenv("TELEGRAM_TOKEN")
 # All handlers should be attached to the Router (or Dispatcher)
 dp = Dispatcher()
 telegram_service = TelegramService()
+
 
 @dp.message(CommandStart())
 async def command_start_handler(message: Message) -> None:
@@ -32,7 +30,7 @@ async def command_start_handler(message: Message) -> None:
     # and the target chat will be passed to :ref:`aiogram.methods.send_message.SendMessage`
     # method automatically or call API method directly via
     # Bot instance: `bot.send_message(chat_id=message.chat.id, ...)`
-    print('start')
+    logging.info('start')
     await message.answer(f"Hello, {html.bold(message.from_user.full_name)}!")
 
 
@@ -56,7 +54,7 @@ async def echo_handler(message: Message) -> None:
         await message.answer_photo(photo, caption=foreca_image.name)
 
     except Exception as err:
-        logging.error(err)
+        logging.error(err, exc_info=True)
         await message.answer("Sorry. Error. I'm sorry, but I can't do that.")
 
 
@@ -68,5 +66,4 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
     asyncio.run(main())

@@ -1,5 +1,6 @@
-import os
 import json
+import logging
+import os
 
 from src.selenium_service.models import SeleniumApiForecaImage
 
@@ -13,7 +14,7 @@ class SeleniumCacheManager:
             os.makedirs(self.path_cache_dir)
 
     def get_foreca_image(self) -> SeleniumApiForecaImage:
-        print('get from cache')
+        logging.info('get from cache')
         if os.path.exists(self.path_image_file):
             with open(self.path_image_file, 'r') as f:
                 d: dict = json.load(f)
@@ -24,10 +25,10 @@ class SeleniumCacheManager:
             raise NotADirectoryError
 
     def save_foreca_image(self, image_object: SeleniumApiForecaImage):
-        print('saving to cache')
+        logging.info('saving to cache')
         with open(self.path_image_file, 'w+') as f:
             f.write(image_object.model_dump_json())
         if os.path.exists(self.path_image_file):
-            print('saved Foreca image to cache', self.path_image_file)
+            logging.info(f'saved Foreca image to cache {self.path_image_file}')
         else:
             raise FileExistsError
